@@ -28,6 +28,8 @@ using namespace std;
 
 @property (weak, nonatomic) IBOutlet UIImageView *cameraImgView;
 @property (weak, nonatomic) IBOutlet UIImageView *subtractImgView;
+@property (weak, nonatomic) IBOutlet UIImageView *topRightImgView;
+@property (weak, nonatomic) IBOutlet UIImageView *bottomLeftImgView;
 
 @property (assign, nonatomic) NSInteger counter;
 @property (assign, nonatomic) BOOL started;
@@ -108,7 +110,9 @@ using namespace std;
         baseImage32FC1 = grayImage32FC1;
     }
     else {
+        self.started = NO;
         cv::Point2d shiftedPoint = cv::phaseCorrelate(grayImage32FC1, baseImage32FC1);
+        shiftedPoint = cv::Point2d(-shiftedPoint.x, -shiftedPoint.y);
         NSLog(@"Point x = %lf, y = %lf", shiftedPoint.x, shiftedPoint.y);
         
         cv::Mat subImage;
@@ -133,19 +137,63 @@ using namespace std;
         cv::Mat requiredImage;
         cv::add(foregroundImage, bgImage, requiredImage);
         
-        dispatch_async(dispatch_get_main_queue(), ^{
-            self.subtractImgView.image = [ImageUtils UIImageFromCVMat:requiredImage];
-        });
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//            self.subtractImgView.image = [ImageUtils UIImageFromCVMat:requiredImage];
+//        });
+        
+        cv::Mat offsetBaseImage = [self offsetBaseImageBy:shiftedPoint];
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//            self.bottomLeftImgView.image = [ImageUtils UIImageFromCVMat:offsetBaseImage];
+//        });
     }
 }
 
 - (cv::Mat)offsetBaseImageBy:(cv::Point2d)offsetPoint {
-    cv::Mat offsetBaseImage = cv::Mat::zeros(colorBaseImage.size(), colorBaseImage.type());
-    double absX = abs(offsetPoint.x);
-    double absY = abs(offsetPoint.y);
-    colorBaseImage.copyTo(offsetBaseImage(cv::Rect(absX, absY, offsetBaseImage.rows - absX, offsetBaseImage.cols - absY)));
-    return offsetBaseImage;
+//    cv::Mat offsetBaseImage = cv::Mat::zeros(640, 480, colorBaseImage.type());
+//    double absX = abs(offsetPoint.x);
+//    double absY = abs(offsetPoint.y);
+//    cv::Rect roi = cv::Rect(0, 0, offsetBaseImage.cols - absY, offsetBaseImage.rows - absX);
+//    colorBaseImage.copyTo(offsetBaseImage(roi));
+//    return offsetBaseImage;
     
+//    int shiftCol = offsetPoint.y;
+//    int shiftRow = offsetPoint.x;
+//    
+//    cv::Rect source = cv::Rect(max(0,-shiftCol),max(0,-shiftRow), colorBaseImage.cols-abs(shiftCol),colorBaseImage.rows-abs(shiftRow));
+//    
+//    cv::Rect target = cv::Rect(max(0,shiftCol),max(0,shiftRow),colorBaseImage.cols-abs(shiftCol),colorBaseImage.rows-abs(shiftRow));
+//    
+//    cv::Mat outputImg;
+//    colorBaseImage(source).copyTo(outputImg(target));
+//    return outputImg;
+    
+    int offsetX = offsetPoint.x;
+    int offsetY = offsetPoint.y;
+    cv::Mat padded = Mat(colorBaseImage.rows + 2 * abs(offsetY), colorBaseImage.cols + 2 * abs(offsetX), CV_8UC3, cv::Scalar(0,0,0));
+    int adjustedX = (offsetX < 0) ? 0 : offsetX;
+    int adjustedY = (offsetY < 0) ? 0 : offsetY;
+    colorBaseImage.copyTo(padded(cv::Rect(adjustedX, adjustedY, colorBaseImage.cols, colorBaseImage.rows)));
+    cv::Mat::MSize reqdSize = padded.size;
+    int height = *reqdSize.p;
+    reqdSize.p++;
+    int width = *reqdSize.p;
+    NSLog(@"Reqd Mat 2 = %d, %d", height, width);
+   
+    adjustedX = (offsetX < 0) ? -offsetX : 0;
+    adjustedY = (offsetY < 0) ? -offsetY : 0;
+    cv::Mat reqdMat = Mat(padded,cv::Rect(adjustedX, adjustedY, colorBaseImage.cols, colorBaseImage.rows));
+    reqdSize = reqdMat.size;
+    height = *reqdSize.p;
+    reqdSize.p++;
+    width = *reqdSize.p;
+    NSLog(@"Reqd Mat = %d, %d", height, width);
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        self.topRightImgView.image = [ImageUtils UIImageFromCVMat:padded];
+        self.bottomLeftImgView.image = [ImageUtils UIImageFromCVMat:reqdMat];
+    });
+    
+    return reqdMat;
 }
 //Mat offsetImageWithPadding(Const Mat& originalImage, int offsetX, int offsetY, Scalar backgroundColour){
 //    padded = Mat(originalImage.rows + 2 * abs(offsetY), originalImage.cols + 2 * abs(offsetX), CV_8UC3, backgroundColour);

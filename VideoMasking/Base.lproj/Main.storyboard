@@ -18,10 +18,16 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="vi3-8E-VhG">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="300"/>
+                                <rect key="frame" x="0.0" y="0.0" width="300" height="300"/>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="PBo-1N-M9a">
-                                <rect key="frame" x="0.0" y="300" width="600" height="300"/>
+                                <rect key="frame" x="300" y="300" width="300" height="300"/>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="lgQ-cA-lOO">
+                                <rect key="frame" x="300" y="0.0" width="300" height="300"/>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="HKI-bd-WeM">
+                                <rect key="frame" x="0.0" y="300" width="300" height="300"/>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UVc-6h-hPk">
                                 <rect key="frame" x="277" y="521" width="46" height="40"/>
@@ -38,22 +44,37 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="PBo-1N-M9a" firstAttribute="height" secondItem="vi3-8E-VhG" secondAttribute="height" id="5ML-iQ-wYC"/>
+                            <constraint firstItem="HKI-bd-WeM" firstAttribute="height" secondItem="vi3-8E-VhG" secondAttribute="height" id="0QD-my-kIr"/>
+                            <constraint firstItem="PBo-1N-M9a" firstAttribute="leading" secondItem="HKI-bd-WeM" secondAttribute="trailing" id="0ll-1i-uW3"/>
+                            <constraint firstItem="HKI-bd-WeM" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="0tr-mf-cq5"/>
+                            <constraint firstItem="lgQ-cA-lOO" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="3cW-yw-4dC"/>
+                            <constraint firstItem="lgQ-cA-lOO" firstAttribute="leading" secondItem="vi3-8E-VhG" secondAttribute="trailing" id="47n-Ce-JdC"/>
+                            <constraint firstItem="lgQ-cA-lOO" firstAttribute="width" secondItem="vi3-8E-VhG" secondAttribute="width" id="5lh-zw-FrI"/>
+                            <constraint firstItem="lgQ-cA-lOO" firstAttribute="height" secondItem="vi3-8E-VhG" secondAttribute="height" id="AKI-QA-2Qk"/>
                             <constraint firstItem="vi3-8E-VhG" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="BMk-29-T3J"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="UVc-6h-hPk" secondAttribute="bottom" constant="39" id="Fph-ct-QBm"/>
+                            <constraint firstItem="PBo-1N-M9a" firstAttribute="top" secondItem="lgQ-cA-lOO" secondAttribute="bottom" id="HDk-rg-SLD"/>
+                            <constraint firstItem="PBo-1N-M9a" firstAttribute="leading" secondItem="HKI-bd-WeM" secondAttribute="trailing" id="I26-ug-SsK"/>
+                            <constraint firstAttribute="trailing" secondItem="lgQ-cA-lOO" secondAttribute="trailing" id="K0B-rw-1eQ"/>
+                            <constraint firstItem="PBo-1N-M9a" firstAttribute="height" secondItem="vi3-8E-VhG" secondAttribute="height" id="Kbg-ma-aVI"/>
                             <constraint firstItem="vi3-8E-VhG" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="L2t-iv-uxo"/>
                             <constraint firstAttribute="trailing" secondItem="PBo-1N-M9a" secondAttribute="trailing" id="NlF-Dt-CHr"/>
+                            <constraint firstItem="HKI-bd-WeM" firstAttribute="width" secondItem="vi3-8E-VhG" secondAttribute="width" id="NpL-4M-yHx"/>
                             <constraint firstItem="UVc-6h-hPk" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="ShG-7T-7jn"/>
+                            <constraint firstItem="PBo-1N-M9a" firstAttribute="width" secondItem="vi3-8E-VhG" secondAttribute="width" id="VxV-uq-Hel"/>
                             <constraint firstItem="PBo-1N-M9a" firstAttribute="top" secondItem="vi3-8E-VhG" secondAttribute="bottom" id="Zs2-z5-3FW"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="HKI-bd-WeM" secondAttribute="bottom" id="el2-L3-p0f"/>
                             <constraint firstItem="PBo-1N-M9a" firstAttribute="top" secondItem="vi3-8E-VhG" secondAttribute="bottom" id="fcd-gE-m6e"/>
-                            <constraint firstAttribute="trailing" secondItem="vi3-8E-VhG" secondAttribute="trailing" id="iiO-WD-PKi"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="PBo-1N-M9a" secondAttribute="bottom" id="kWB-dR-Tvm"/>
-                            <constraint firstItem="PBo-1N-M9a" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="r4M-AZ-Ohb"/>
+                            <constraint firstItem="lgQ-cA-lOO" firstAttribute="leading" secondItem="vi3-8E-VhG" secondAttribute="trailing" id="may-Pe-FvQ"/>
+                            <constraint firstItem="HKI-bd-WeM" firstAttribute="top" secondItem="vi3-8E-VhG" secondAttribute="bottom" id="prd-WR-5fW"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="bottomLeftImgView" destination="HKI-bd-WeM" id="499-fd-USA"/>
                         <outlet property="cameraImgView" destination="vi3-8E-VhG" id="ctL-CP-oCm"/>
                         <outlet property="subtractImgView" destination="PBo-1N-M9a" id="w2r-hj-JNT"/>
+                        <outlet property="topRightImgView" destination="lgQ-cA-lOO" id="9Px-ZA-aDh"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
