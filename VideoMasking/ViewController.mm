@@ -20,9 +20,10 @@ using namespace std;
 {
     CvVideoCamera *camera;
     
-    cv::Mat grayBaseImage;
     cv::Mat colorBaseImage;
     cv::Mat beachImage;
+    
+    cv::Mat baseImage32FC1;
 }
 
 @property (weak, nonatomic) IBOutlet UIImageView *cameraImgView;
@@ -78,11 +79,16 @@ using namespace std;
     cv::blur(rgbImage, denoisedRGBImage, cv::Size(4, 4));
 //    cv::GaussianBlur(OMRImageGray, blurImage, cv::Size(2,2), 0, 0);
     
+    cv::Mat denoisedRGBImage32F;
+    denoisedRGBImage.convertTo(denoisedRGBImage32F, CV_32F);
+    
+    cv::Mat grayImage32FC1;
+    cv::cvtColor(denoisedRGBImage32F, grayImage32FC1, CV_RGB2GRAY);
+    
     if (self.counter == 0) {
         self.started = NO;
         self.counter++;
         colorBaseImage = denoisedRGBImage;
-        cv::cvtColor(denoisedRGBImage, grayBaseImage, CV_RGB2GRAY);
         cv::Mat::MSize reqdSize = colorBaseImage.size;
         int height = *reqdSize.p;
         reqdSize.p++;
@@ -98,8 +104,13 @@ using namespace std;
         dispatch_async(dispatch_get_main_queue(), ^{
             self.subtractImgView.image = [ImageUtils UIImageFromCVMat:colorBaseImage];
         });
+        
+        baseImage32FC1 = grayImage32FC1;
     }
     else {
+        cv::Point2d shiftedPoint = cv::phaseCorrelate(grayImage32FC1, baseImage32FC1);
+        NSLog(@"Point x = %lf, y = %lf", shiftedPoint.x, shiftedPoint.y);
+        
         cv::Mat subImage;
         cv::absdiff(denoisedRGBImage, colorBaseImage, subImage);
         
@@ -127,6 +138,23 @@ using namespace std;
         });
     }
 }
+
+- (cv::Mat)offsetBaseImageBy:(cv::Point2d)offsetPoint {
+    cv::Mat offsetBaseImage = cv::Mat::zeros(colorBaseImage.size(), colorBaseImage.type());
+    double absX = abs(offsetPoint.x);
+    double absY = abs(offsetPoint.y);
+    colorBaseImage.copyTo(offsetBaseImage(cv::Rect(absX, absY, offsetBaseImage.rows - absX, offsetBaseImage.cols - absY)));
+    return offsetBaseImage;
+    
+}
+//Mat offsetImageWithPadding(Const Mat& originalImage, int offsetX, int offsetY, Scalar backgroundColour){
+//    padded = Mat(originalImage.rows + 2 * abs(offsetY), originalImage.cols + 2 * abs(offsetX), CV_8UC3, backgroundColour);
+//    originalImage.copyTo(padded(Rect(abs(offsetX), abs(offsetY), originalImage.cols, originalImage.rows)));
+//    return Mat(padded,Rect(abs(offsetX) + offsetX, abs(offsetY) + offsetY, originalImage.cols, originalImage.rows));
+//}
+
+////example use with black borders along the right hand side and top:
+//Mat offsetImage = offsetImageWithPadding(originalImage, -10, 6, Scalar(0,0,0));
 
 - (IBAction)btnTapped:(id)sender {
     self.started = YES;
