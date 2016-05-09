@@ -20,13 +20,18 @@ using namespace std;
 {
     CvVideoCamera *camera;
     
-    cv::Mat grayBaseImage;
     cv::Mat colorBaseImage;
     cv::Mat beachImage;
+    cv::Mat mountainImage;
+    cv::Mat filteringBgImage;
 }
 
 @property (weak, nonatomic) IBOutlet UIImageView *cameraImgView;
-@property (weak, nonatomic) IBOutlet UIImageView *subtractImgView;
+@property (weak, nonatomic) IBOutlet UIButton *baseImageBtn;
+@property (weak, nonatomic) IBOutlet UIButton *beachImageBtn;
+@property (weak, nonatomic) IBOutlet UIButton *mountainImageBtn;
+@property (weak, nonatomic) IBOutlet UIButton *recordImageBtn;
+@property (weak, nonatomic) IBOutlet UILabel *instructionLabel;
 
 @property (assign, nonatomic) NSInteger counter;
 @property (assign, nonatomic) BOOL started;
@@ -39,7 +44,7 @@ using namespace std;
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
-    camera = [[CvVideoCamera alloc] initWithParentView: _cameraImgView];
+    camera = [[CvVideoCamera alloc] init];
     camera.defaultAVCaptureDevicePosition = AVCaptureDevicePositionFront;
     camera.defaultAVCaptureSessionPreset = AVCaptureSessionPreset640x480;
     camera.defaultAVCaptureVideoOrientation = AVCaptureVideoOrientationPortrait;
@@ -52,6 +57,13 @@ using namespace std;
     
     UIImage *beach = [UIImage imageNamed:@"beach"];
     beachImage = [ImageUtils cvMatFromUIImage:beach];
+    UIImage *mountain = [UIImage imageNamed:@"mountain"];
+    mountainImage = [ImageUtils cvMatFromUIImage:mountain];
+    self.beachImageBtn.hidden = true;
+    self.mountainImageBtn.hidden = true;
+    self.recordImageBtn.hidden = true;
+    self.instructionLabel.text = @"Take background image";
+    [self.baseImageBtn setTitle:@"Click" forState:UIControlStateNormal];
 }
 
 -(void)viewDidAppear:(BOOL)animated {
@@ -67,12 +79,15 @@ using namespace std;
 #pragma mark - Video Camera Delegate methods
 -(void)processImage:(cv::Mat &)inputImage
 {
-    if (!self.started) {
-        return;
-    }
-    
     cv::Mat rgbImage;
     cv::cvtColor(inputImage, rgbImage, CV_BGR2RGB);
+    
+    if (!self.started) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.cameraImgView.image = [ImageUtils UIImageFromCVMat:rgbImage];
+        });
+        return;
+    }
     
     cv::Mat denoisedRGBImage;
     cv::blur(rgbImage, denoisedRGBImage, cv::Size(4, 4));
@@ -82,22 +97,15 @@ using namespace std;
         self.started = NO;
         self.counter++;
         colorBaseImage = denoisedRGBImage;
-        cv::cvtColor(denoisedRGBImage, grayBaseImage, CV_RGB2GRAY);
-        cv::Mat::MSize reqdSize = colorBaseImage.size;
-        int height = *reqdSize.p;
-        reqdSize.p++;
-        int width = *reqdSize.p;
-        
-        int beachImgWidth = beachImage.cols;
-        int beachImgHeight = beachImage.rows;
-        
-        cv::Rect roi((beachImgWidth - width) / 2.0 , (beachImgHeight - height) / 2.0, width, height);
-        beachImage = beachImage(roi);
-        cv::cvtColor(beachImage, beachImage, CV_BGR2RGB);
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            self.subtractImgView.image = [ImageUtils UIImageFromCVMat:colorBaseImage];
+            self.cameraImgView.image = [ImageUtils UIImageFromCVMat:colorBaseImage];
+            [self.baseImageBtn setTitle:@"Reset" forState:UIControlStateNormal];
+            self.beachImageBtn.hidden = NO;
+            self.mountainImageBtn.hidden = NO;
+            self.instructionLabel.text = @"Select Background mode";
         });
+        
     }
     else {
         cv::Mat subImage;
@@ -117,19 +125,75 @@ using namespace std;
         
         cv::Mat invertedThresholdImage = 255 - thresholdImage;
         cv::Mat bgImage;
-        beachImage.copyTo(bgImage, invertedThresholdImage);
+        filteringBgImage.copyTo(bgImage, invertedThresholdImage);
         
         cv::Mat requiredImage;
         cv::add(foregroundImage, bgImage, requiredImage);
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            self.subtractImgView.image = [ImageUtils UIImageFromCVMat:requiredImage];
+            self.cameraImgView.image = [ImageUtils UIImageFromCVMat:requiredImage];
         });
     }
 }
 
-- (IBAction)btnTapped:(id)sender {
+#pragma mark - Action and Selector methods
+- (IBAction)baseBtnTapped:(id)sender {
+    if ([self.beachImageBtn isHidden]) {
+        self.started = YES;
+    }
+    else {
+        self.counter = 0;
+        self.beachImageBtn.hidden = true;
+        self.mountainImageBtn.hidden = true;
+        self.recordImageBtn.hidden = true;
+        self.instructionLabel.text = @"Take background image";
+        [self.baseImageBtn setTitle:@"Click" forState:UIControlStateNormal];
+    }
+}
+
+- (IBAction)beachBtnTapped:(id)sender {
+    cv::Mat::MSize reqdSize = colorBaseImage.size;
+    int height = *reqdSize.p;
+    reqdSize.p++;
+    int width = *reqdSize.p;
+    
+    int beachImgWidth = beachImage.cols;
+    int beachImgHeight = beachImage.rows;
+    
+    
+    cv::Rect roi((beachImgWidth - width) / 2.0 , (beachImgHeight - height) / 2.0, width, height);
+    filteringBgImage = beachImage(roi);
+    cv::cvtColor(filteringBgImage, filteringBgImage, CV_BGR2RGB);
+    
+    self.instructionLabel.hidden = YES;
     self.started = YES;
+}
+
+- (IBAction)mountainBtnTapped:(id)sender {
+    cv::Mat::MSize reqdSize = colorBaseImage.size;
+    int height = *reqdSize.p;
+    reqdSize.p++;
+    int width = *reqdSize.p;
+    
+    int mountainImageWidth = mountainImage.cols;
+    int mountainImageHeight = mountainImage.rows;
+    
+    cv::Rect roi((mountainImageWidth - width) / 2.0 , (mountainImageHeight - height) / 2.0, width, height);
+    filteringBgImage = mountainImage(roi);
+    cv::cvtColor(filteringBgImage, filteringBgImage, CV_BGR2RGB);
+    
+    self.instructionLabel.hidden = YES;
+    self.started = YES;
+}
+
+- (IBAction)recordBtnTapped:(id)sender {
+    if (![self.baseImageBtn isHidden]) {
+        
+    }
+    else {
+        
+        self.baseImageBtn.hidden = YES;
+    }
 }
 
 @end
