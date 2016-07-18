@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		220630621CDA19ED0082D2CA /* FPS.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2206305F1CDA19ED0082D2CA /* FPS.mm */; };
 		220630631CDA19ED0082D2CA /* ImageUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 220630611CDA19ED0082D2CA /* ImageUtils.mm */; };
+		220DD50E1CE08479006FD8B0 /* libjpeg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 220DD50D1CE08479006FD8B0 /* libjpeg.a */; };
 		221BE5431CD9FF5A00FC4514 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 221BE5421CD9FF5A00FC4514 /* main.m */; };
 		221BE5461CD9FF5A00FC4514 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 221BE5451CD9FF5A00FC4514 /* AppDelegate.m */; };
 		221BE5491CD9FF5A00FC4514 /* ViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 221BE5481CD9FF5A00FC4514 /* ViewController.mm */; };
@@ -34,6 +35,7 @@
 		2206305F1CDA19ED0082D2CA /* FPS.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FPS.mm; sourceTree = "<group>"; };
 		220630601CDA19ED0082D2CA /* ImageUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageUtils.h; sourceTree = "<group>"; };
 		220630611CDA19ED0082D2CA /* ImageUtils.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ImageUtils.mm; sourceTree = "<group>"; };
+		220DD50D1CE08479006FD8B0 /* libjpeg.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libjpeg.a; sourceTree = "<group>"; };
 		221BE53E1CD9FF5A00FC4514 /* VideoMasking.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VideoMasking.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		221BE5421CD9FF5A00FC4514 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		221BE5441CD9FF5A00FC4514 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -66,6 +68,7 @@
 			files = (
 				221BE56F1CD9FFD700FC4514 /* Accelerate.framework in Frameworks */,
 				221BE5701CD9FFD700FC4514 /* AssetsLibrary.framework in Frameworks */,
+				220DD50E1CE08479006FD8B0 /* libjpeg.a in Frameworks */,
 				221BE56C1CD9FFC600FC4514 /* libc++.tbd in Frameworks */,
 				221BE5691CD9FFBD00FC4514 /* AVFoundation.framework in Frameworks */,
 				221BE56A1CD9FFBD00FC4514 /* Foundation.framework in Frameworks */,
@@ -139,6 +142,7 @@
 		221BE5581CD9FF7E00FC4514 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				220DD50D1CE08479006FD8B0 /* libjpeg.a */,
 				221BE56D1CD9FFD700FC4514 /* Accelerate.framework */,
 				221BE56E1CD9FFD700FC4514 /* AssetsLibrary.framework */,
 				221BE56B1CD9FFC600FC4514 /* libc++.tbd */,
@@ -352,6 +356,10 @@
 				INFOPLIST_FILE = VideoMasking/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/VideoMasking/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = YMediaLabs.VideoMasking;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -371,6 +379,10 @@
 				INFOPLIST_FILE = VideoMasking/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/VideoMasking/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = YMediaLabs.VideoMasking;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};

@@ -12,6 +12,7 @@
 #import "ViewController.h"
 #import "ImageUtils.h"
 #import <opencv2/highgui/ios.h>
+#import <AssetsLibrary/AssetsLibrary.h>
 
 using namespace cv;
 using namespace std;
@@ -24,6 +25,7 @@ using namespace std;
     cv::Mat beachImage;
     cv::Mat mountainImage;
     cv::Mat filteringBgImage;
+    VideoWriter videoWriter;
 }
 
 @property (weak, nonatomic) IBOutlet UIImageView *cameraImgView;
@@ -35,6 +37,7 @@ using namespace std;
 
 @property (assign, nonatomic) NSInteger counter;
 @property (assign, nonatomic) BOOL started;
+@property (assign, nonatomic) BOOL isVideoRecorded;
 
 @end
 
@@ -133,6 +136,10 @@ using namespace std;
         dispatch_async(dispatch_get_main_queue(), ^{
             self.cameraImgView.image = [ImageUtils UIImageFromCVMat:requiredImage];
         });
+        
+        if (self.isVideoRecorded) {
+            videoWriter.write(requiredImage);
+        }
     }
 }
 
@@ -166,6 +173,7 @@ using namespace std;
     cv::cvtColor(filteringBgImage, filteringBgImage, CV_BGR2RGB);
     
     self.instructionLabel.hidden = YES;
+    self.recordImageBtn.hidden = NO;
     self.started = YES;
 }
 
@@ -183,17 +191,48 @@ using namespace std;
     cv::cvtColor(filteringBgImage, filteringBgImage, CV_BGR2RGB);
     
     self.instructionLabel.hidden = YES;
+    self.recordImageBtn.hidden = NO;
     self.started = YES;
 }
 
 - (IBAction)recordBtnTapped:(id)sender {
-    if (![self.baseImageBtn isHidden]) {
+    NSString *filePath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
+    filePath = [filePath stringByAppendingPathComponent:@"output.mp4"];
+    
+    if ([self.baseImageBtn isHidden]) {
+        [self.recordImageBtn setTitle:@"Record" forState:UIControlStateNormal];
+        self.baseImageBtn.hidden = NO;
+        self.isVideoRecorded = NO;
         
+        if (UIVideoAtPathIsCompatibleWithSavedPhotosAlbum(filePath)) {
+            ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
+            NSURL *filePathURL = [NSURL fileURLWithPath:filePath];
+            if ([library videoAtPathIsCompatibleWithSavedPhotosAlbum:filePathURL]) {
+                [library writeVideoAtPathToSavedPhotosAlbum:filePathURL completionBlock:^(NSURL *assetURL, NSError *error) {
+                }];
+            }
+//            UISaveVideoAtPathToSavedPhotosAlbum(filePath, nil, nil, nil);
+        }
     }
     else {
-        
         self.baseImageBtn.hidden = YES;
+        [self.recordImageBtn setTitle:@"Stop" forState:UIControlStateNormal];
+        
+        if ([[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
+            NSError *error = nil;
+            [[NSFileManager defaultManager] removeItemAtPath:filePath error:&error];
+        }
+        
+        const char *filePathStr = [filePath UTF8String];
+        videoWriter = VideoWriter(filePathStr, CV_FOURCC('M','P','4','V'), 30, cv::Size(480, 640), true);
+        self.isVideoRecorded = YES;
     }
+}
+
+- (void)               video: (NSString *) videoPath
+    didFinishSavingWithError: (NSError *) error
+                 contextInfo: (void *) contextInfo {
+
 }
 
 @end
