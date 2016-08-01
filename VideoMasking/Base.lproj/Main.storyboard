@@ -23,7 +23,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UVc-6h-hPk">
-                                <rect key="frame" x="95" y="510" width="50" height="50"/>
+                                <rect key="frame" x="125" y="510" width="50" height="50"/>
                                 <color key="backgroundColor" red="1" green="0.14901960780000001" blue="0.0" alpha="1" colorSpace="deviceRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="DyS-jP-fIV"/>
@@ -41,7 +41,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OD2-zD-1RD">
-                                <rect key="frame" x="215" y="510" width="50" height="50"/>
+                                <rect key="frame" x="275" y="510" width="50" height="50"/>
                                 <color key="backgroundColor" red="1" green="0.14901960780000001" blue="0.0" alpha="1" colorSpace="deviceRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="oMr-uP-ijn"/>
@@ -59,7 +59,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="q1K-UR-pLU">
-                                <rect key="frame" x="335" y="510" width="50" height="50"/>
+                                <rect key="frame" x="425" y="510" width="50" height="50"/>
                                 <color key="backgroundColor" red="1" green="0.14901960780000001" blue="0.0" alpha="1" colorSpace="deviceRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="gkX-dy-SF0"/>
@@ -76,24 +76,6 @@
                                     <action selector="mountainBtnTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="4Vy-A2-j9q"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sKC-rH-zTP">
-                                <rect key="frame" x="455" y="510" width="50" height="50"/>
-                                <color key="backgroundColor" red="1" green="0.14901960780000001" blue="0.0" alpha="1" colorSpace="deviceRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="50" id="nND-Qb-deG"/>
-                                    <constraint firstAttribute="height" constant="50" id="tdN-YJ-Sdd"/>
-                                </constraints>
-                                <state key="normal" title="Button"/>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="boolean" keyPath="self.layer.masksToBounds" value="YES"/>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="self.layer.cornerRadius">
-                                        <integer key="value" value="25"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
-                                <connections>
-                                    <action selector="recordBtnTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="BJc-rp-Hao"/>
-                                </connections>
-                            </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hVD-Wp-QOH">
                                 <rect key="frame" x="270" y="285" width="61" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="25"/>
@@ -107,18 +89,15 @@
                             <constraint firstItem="q1K-UR-pLU" firstAttribute="top" secondItem="OD2-zD-1RD" secondAttribute="top" id="AZg-Uw-RZA"/>
                             <constraint firstItem="hVD-Wp-QOH" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="DXJ-hS-0wK"/>
                             <constraint firstItem="UVc-6h-hPk" firstAttribute="top" secondItem="OD2-zD-1RD" secondAttribute="top" id="EOE-mh-nHb"/>
-                            <constraint firstItem="UVc-6h-hPk" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="trailing" multiplier="0.2" id="FRk-MN-3xg"/>
+                            <constraint firstItem="UVc-6h-hPk" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="trailing" multiplier="0.25" id="FRk-MN-3xg"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="UVc-6h-hPk" secondAttribute="bottom" constant="40" id="Fph-ct-QBm"/>
                             <constraint firstAttribute="trailing" secondItem="PBo-1N-M9a" secondAttribute="trailing" id="NlF-Dt-CHr"/>
-                            <constraint firstItem="OD2-zD-1RD" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="trailing" multiplier="0.4" id="NmG-dN-M8z"/>
-                            <constraint firstItem="sKC-rH-zTP" firstAttribute="bottom" secondItem="OD2-zD-1RD" secondAttribute="bottom" id="O2H-Bd-6nP"/>
+                            <constraint firstItem="OD2-zD-1RD" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="trailing" multiplier="0.5" id="NmG-dN-M8z"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="PBo-1N-M9a" secondAttribute="bottom" id="kWB-dR-Tvm"/>
-                            <constraint firstItem="sKC-rH-zTP" firstAttribute="top" secondItem="OD2-zD-1RD" secondAttribute="top" id="mjh-gw-Izf"/>
-                            <constraint firstItem="q1K-UR-pLU" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="trailing" multiplier="0.6" id="nc2-a5-uee"/>
+                            <constraint firstItem="q1K-UR-pLU" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="trailing" multiplier="0.75" id="nc2-a5-uee"/>
                             <constraint firstItem="PBo-1N-M9a" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="r4M-AZ-Ohb"/>
                             <constraint firstItem="hVD-Wp-QOH" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="sAr-OW-PxK"/>
                             <constraint firstItem="q1K-UR-pLU" firstAttribute="bottom" secondItem="OD2-zD-1RD" secondAttribute="bottom" id="tfV-QQ-Wma"/>
-                            <constraint firstItem="sKC-rH-zTP" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="trailing" multiplier="0.8" id="yJt-sQ-zSz"/>
                         </constraints>
                     </view>
                     <connections>
@@ -127,7 +106,6 @@
                         <outlet property="cameraImgView" destination="PBo-1N-M9a" id="Dl8-K9-6dL"/>
                         <outlet property="instructionLabel" destination="hVD-Wp-QOH" id="qoH-jj-y5L"/>
                         <outlet property="mountainImageBtn" destination="q1K-UR-pLU" id="Uto-gl-pPP"/>
-                        <outlet property="recordImageBtn" destination="sKC-rH-zTP" id="FyL-kj-exs"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

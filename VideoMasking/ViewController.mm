@@ -30,7 +30,6 @@ using namespace std;
 @property (weak, nonatomic) IBOutlet UIButton *baseImageBtn;
 @property (weak, nonatomic) IBOutlet UIButton *beachImageBtn;
 @property (weak, nonatomic) IBOutlet UIButton *mountainImageBtn;
-@property (weak, nonatomic) IBOutlet UIButton *recordImageBtn;
 @property (weak, nonatomic) IBOutlet UILabel *instructionLabel;
 
 @property (assign, nonatomic) NSInteger counter;
@@ -46,7 +45,7 @@ using namespace std;
     
     camera = [[CvVideoCamera alloc] init];
     camera.defaultAVCaptureDevicePosition = AVCaptureDevicePositionFront;
-    camera.defaultAVCaptureSessionPreset = AVCaptureSessionPreset640x480;
+    camera.defaultAVCaptureSessionPreset = AVCaptureSessionPreset1280x720;
     camera.defaultAVCaptureVideoOrientation = AVCaptureVideoOrientationPortrait;
     camera.defaultFPS = 30;
     camera.grayscaleMode = NO;
@@ -61,7 +60,6 @@ using namespace std;
     mountainImage = [ImageUtils cvMatFromUIImage:mountain];
     self.beachImageBtn.hidden = true;
     self.mountainImageBtn.hidden = true;
-    self.recordImageBtn.hidden = true;
     self.instructionLabel.text = @"Take background image";
     [self.baseImageBtn setTitle:@"Click" forState:UIControlStateNormal];
 }
@@ -145,8 +143,8 @@ using namespace std;
         self.counter = 0;
         self.beachImageBtn.hidden = true;
         self.mountainImageBtn.hidden = true;
-        self.recordImageBtn.hidden = true;
         self.instructionLabel.text = @"Take background image";
+        self.instructionLabel.hidden = false;
         [self.baseImageBtn setTitle:@"Click" forState:UIControlStateNormal];
     }
 }
@@ -167,6 +165,7 @@ using namespace std;
     
     self.instructionLabel.hidden = YES;
     self.started = YES;
+    [self.baseImageBtn setTitle:@"Stop" forState:UIControlStateNormal];
 }
 
 - (IBAction)mountainBtnTapped:(id)sender {
@@ -184,16 +183,7 @@ using namespace std;
     
     self.instructionLabel.hidden = YES;
     self.started = YES;
-}
-
-- (IBAction)recordBtnTapped:(id)sender {
-    if (![self.baseImageBtn isHidden]) {
-        
-    }
-    else {
-        
-        self.baseImageBtn.hidden = YES;
-    }
+    [self.baseImageBtn setTitle:@"Stop" forState:UIControlStateNormal];
 }
 
 @end
